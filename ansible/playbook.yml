@@ -1,0 +1,33 @@
+---
+- name: 'Provision Image'
+  hosts: default
+  become: yes
+  tasks:
+    - name: Install Java
+      ansible.builtin.apt:
+        name: default-jdk
+        state: latest
+    - name: Install Python
+      ansible.builtin.apt:
+        name: python3
+        state: latest
+    - name: Install fontconfig
+      ansible.builtin.apt:
+        name: fontconfig
+        state: latest
+    - name: Add jenkins signing key
+      ansible.builtin.apt_key:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+        state: present
+    - name: Add Jenkins Repository
+      ansible.builtin.apt_repository:
+        repo: deb https://pkg.jenkins.io/debian-stable
+    - name: Install Jenkins
+      ansible.builtin.apt:
+        name: jenkins
+        state: latest
+        update_cache: yes
+    - name: Start Jenkins
+      ansible.builtin.systemd:
+        name: jenkins
+        state: started
