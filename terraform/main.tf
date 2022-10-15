@@ -33,6 +33,17 @@ data "aws_ami" "jenkins_ami" {
   }
 }
 
+variable "ssh_key" {
+    type = string
+    nullable = false
+    description = "The public key to be put on the EC2 instance so you can SSH in."
+}
+
+resource "aws_key_pair" "deployer" {
+  key_name   = "deployer-key"
+  public_key = var.ssh_key
+}
+
 resource "aws_security_group" "jenkins" {
   name        = "jenkins security group"
 
@@ -40,6 +51,13 @@ resource "aws_security_group" "jenkins" {
     protocol  = "tcp"
     from_port = 8080
     to_port   = 8080
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol = "tcp"
+    from_port = 22
+    to_port = 22
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
@@ -59,6 +77,7 @@ resource "aws_instance" "cicd_server" {
   ami               = data.aws_ami.jenkins_ami.id
   instance_type     = "t2.medium"
   availability_zone = "us-east-2a"
+  key_name = aws_key_pair.deployer.key_name
 
   root_block_device {
     volume_size = 50

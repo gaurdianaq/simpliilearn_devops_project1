@@ -21,7 +21,8 @@
         state: present
     - name: Add Jenkins Repository
       ansible.builtin.apt_repository:
-        repo: deb https://pkg.jenkins.io/debian-stable
+        repo: deb https://pkg.jenkins.io/debian-stable binary/
+        state: present
     - name: Install Jenkins
       ansible.builtin.apt:
         name: jenkins

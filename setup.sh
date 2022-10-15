@@ -6,6 +6,8 @@
 export AWS_ACCESS_KEY_ID=<YOURKEY>
 export AWS_SECRET_ACCESS_KEY=<YOURKEY>
 
+public_ssh_key = <YOURPUBLICSSHKEY>
+
 cd ./packer
 packer init jenkins.pkr.hcl
 packer build jenkins.pkr.hcl
