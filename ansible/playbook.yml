@@ -1,7 +1,7 @@
 ---
-- name: 'Provision Image'
+- name: "Provision Image"
   hosts: default
-  become: yes
+  become: true
   tasks:
     - name: Install Java
       ansible.builtin.apt:
