@@ -35,7 +35,6 @@ data "aws_ami" "jenkins_ami" {
 
 variable "ssh_key" {
     type = string
-    nullable = false
     description = "The public key to be put on the EC2 instance so you can SSH in."
 }
 
