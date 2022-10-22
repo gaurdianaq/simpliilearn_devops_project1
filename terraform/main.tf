@@ -88,3 +88,8 @@ resource "aws_instance" "cicd_server" {
     Name = "Jenkins Server"
   }
 }
+
+output "instance_public_ip" {
+  description = "Public IP address of the EC2 instance"
+  value       = "${aws_instance.cicd_server.public_ip}:8080"
+}

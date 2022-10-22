@@ -3,18 +3,14 @@
   hosts: default
   become: true
   tasks:
-    - name: Install Java
+    - name: Install Java, Python, fontconfig
       ansible.builtin.apt:
-        name: default-jdk
+        name: "{{ item }}"
         state: latest
-    - name: Install Python
-      ansible.builtin.apt:
-        name: python3
-        state: latest
-    - name: Install fontconfig
-      ansible.builtin.apt:
-        name: fontconfig
-        state: latest
+      with_items:
+        - default-jdk
+        - fontconfig
+        - python3
     - name: Add jenkins signing key
       ansible.builtin.apt_key:
         url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
@@ -29,6 +25,7 @@
         state: latest
         update_cache: yes
     - name: Start Jenkins
-      ansible.builtin.systemd:
+      ansible.builtin.service:
         name: jenkins
         state: started
+        enabled: yes
